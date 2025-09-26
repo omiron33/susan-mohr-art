@@ -55,7 +55,7 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
       isSold: artwork.isSold ?? false,
       category: category.name,
     }))
-    .filter((item) => Boolean(item.imageUrl));
+    .filter((item): item is typeof item & { imageUrl: string } => Boolean(item.imageUrl));
 
   return (
     <div className="py-16">
