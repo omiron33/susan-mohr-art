@@ -11,7 +11,7 @@ export type ContactFormState =
 export async function submitContact(values: ContactFormValues): Promise<ContactFormState> {
   const parsed = contactSchema.safeParse(values);
   if (!parsed.success) {
-    return { status: "error", message: parsed.error.errors[0]?.message ?? "Invalid submission" };
+    return { status: "error", message: parsed.error.issues[0]?.message ?? "Invalid submission" };
   }
 
   try {
