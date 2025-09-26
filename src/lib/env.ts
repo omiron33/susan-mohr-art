@@ -19,7 +19,7 @@ const envSchema = z.object({
         return withProtocol;
       }
     }, z.string().url().optional())
-    .default("https://directus.susanmohrart.com"),
+    .default("http://167.99.55.168:8055"),
   DIRECTUS_STATIC_TOKEN: z.string().optional(),
   DIRECTUS_ADMIN_TOKEN: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
