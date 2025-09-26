@@ -52,11 +52,11 @@ export interface Order {
 }
 
 export interface DirectusSchema {
-  categories: Category;
-  artworks: Artwork;
-  prints: Print;
-  site_content: SiteContent;
-  orders: Order;
+  categories: Category[];
+  artworks: Artwork[];
+  prints: Print[];
+  site_content: SiteContent[];
+  orders: Order[];
 }
 
 export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cache } from "react";
 import {
   createDirectus,
@@ -54,9 +53,8 @@ export function getAssetUrl(fileId?: string | null, params?: string) {
 export const fetchCategories = cache(async () => {
   const client = getClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const categories = await client.request(
-    readItems("categories" as any, {
+    readItems("categories", {
       fields: ["id", "slug", "name", "description", "hero_image", "sort"],
       sort: ["sort", "name"],
     })
@@ -66,9 +64,8 @@ export const fetchCategories = cache(async () => {
 
 export const fetchCategoryBySlug = cache(async (slug: string) => {
   const client = getClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const categories = await client.request(
-    readItems("categories" as any, {
+    readItems("categories", {
       filter: { slug: { _eq: slug } },
       limit: 1,
     })
@@ -78,9 +75,8 @@ export const fetchCategoryBySlug = cache(async (slug: string) => {
 
 export const fetchArtworksByCategorySlug = cache(async (slug: string) => {
   const client = getClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const artworks = await client.request(
-    readItems("artworks" as any, {
+    readItems("artworks", {
       filter: {
         category: { slug: { _eq: slug } },
       },
@@ -109,7 +105,7 @@ export const fetchArtworksByCategorySlug = cache(async (slug: string) => {
 export const fetchArtworkBySlug = cache(async (slug: string) => {
   const client = getClient();
   const artwork = await client.request(
-    readItems("artworks" as any, {
+    readItems("artworks", {
       filter: { slug: { _eq: slug } },
       limit: 1,
     })
@@ -119,9 +115,8 @@ export const fetchArtworkBySlug = cache(async (slug: string) => {
 
 export const fetchPrints = cache(async () => {
   const client = getClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prints = await client.request(
-    readItems("prints" as any, {
+    readItems("prints", {
       fields: [
         "id",
         "title",
@@ -148,9 +143,8 @@ export const fetchPrintById = cache(async (id: string) => {
 
 export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
   const client = getClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prints = await client.request(
-    readItems("prints" as any, {
+    readItems("prints", {
       filter: { stripe_price_id: { _eq: priceId } },
       limit: 1,
     })
@@ -160,9 +154,8 @@ export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
 
 export const fetchSiteContent = cache(async (keys: string[]) => {
   const client = getClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const content = await client.request(
-    readItems("site_content" as any, {
+    readItems("site_content", {
       filter: { key: { _in: keys } },
       fields: ["key", "value"],
       limit: keys.length,
