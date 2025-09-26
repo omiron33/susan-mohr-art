@@ -52,6 +52,8 @@ export function getAssetUrl(fileId?: string | null, params?: string) {
 
 export const fetchCategories = cache(async () => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const categories = await client.request(
     readItems("categories" as any, {
       fields: ["id", "slug", "name", "description", "hero_image", "sort"],
@@ -63,6 +65,7 @@ export const fetchCategories = cache(async () => {
 
 export const fetchCategoryBySlug = cache(async (slug: string) => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const categories = await client.request(
     readItems("categories" as any, {
       filter: { slug: { _eq: slug } },
@@ -74,6 +77,7 @@ export const fetchCategoryBySlug = cache(async (slug: string) => {
 
 export const fetchArtworksByCategorySlug = cache(async (slug: string) => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const artworks = await client.request(
     readItems("artworks" as any, {
       filter: {
@@ -114,6 +118,7 @@ export const fetchArtworkBySlug = cache(async (slug: string) => {
 
 export const fetchPrints = cache(async () => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prints = await client.request(
     readItems("prints" as any, {
       fields: [
@@ -142,6 +147,7 @@ export const fetchPrintById = cache(async (id: string) => {
 
 export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prints = await client.request(
     readItems("prints" as any, {
       filter: { stripe_price_id: { _eq: priceId } },
@@ -153,6 +159,7 @@ export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
 
 export const fetchSiteContent = cache(async (keys: string[]) => {
   const client = getClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const content = await client.request(
     readItems("site_content" as any, {
       filter: { key: { _in: keys } },
