@@ -53,7 +53,7 @@ export function getAssetUrl(fileId?: string | null, params?: string) {
 export const fetchCategories = cache(async () => {
   const client = getClient();
   const categories = await client.request(
-    readItems("categories" as keyof DirectusSchema, {
+    readItems("categories" as any, {
       fields: ["id", "slug", "name", "description", "hero_image", "sort"],
       sort: ["sort", "name"],
     })
@@ -64,7 +64,7 @@ export const fetchCategories = cache(async () => {
 export const fetchCategoryBySlug = cache(async (slug: string) => {
   const client = getClient();
   const categories = await client.request(
-    readItems("categories" as keyof DirectusSchema, {
+    readItems("categories" as any, {
       filter: { slug: { _eq: slug } },
       limit: 1,
     })
@@ -75,7 +75,7 @@ export const fetchCategoryBySlug = cache(async (slug: string) => {
 export const fetchArtworksByCategorySlug = cache(async (slug: string) => {
   const client = getClient();
   const artworks = await client.request(
-    readItems("artworks" as keyof DirectusSchema, {
+    readItems("artworks" as any, {
       filter: {
         category: { slug: { _eq: slug } },
       },
@@ -104,7 +104,7 @@ export const fetchArtworksByCategorySlug = cache(async (slug: string) => {
 export const fetchArtworkBySlug = cache(async (slug: string) => {
   const client = getClient();
   const artwork = await client.request(
-    readItems("artworks" as keyof DirectusSchema, {
+    readItems("artworks" as any, {
       filter: { slug: { _eq: slug } },
       limit: 1,
     })
@@ -115,7 +115,7 @@ export const fetchArtworkBySlug = cache(async (slug: string) => {
 export const fetchPrints = cache(async () => {
   const client = getClient();
   const prints = await client.request(
-    readItems("prints" as keyof DirectusSchema, {
+    readItems("prints" as any, {
       fields: [
         "id",
         "title",
@@ -143,7 +143,7 @@ export const fetchPrintById = cache(async (id: string) => {
 export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
   const client = getClient();
   const prints = await client.request(
-    readItems("prints" as keyof DirectusSchema, {
+    readItems("prints" as any, {
       filter: { stripe_price_id: { _eq: priceId } },
       limit: 1,
     })
@@ -154,7 +154,7 @@ export const fetchPrintByStripePriceId = cache(async (priceId: string) => {
 export const fetchSiteContent = cache(async (keys: string[]) => {
   const client = getClient();
   const content = await client.request(
-    readItems("site_content" as keyof DirectusSchema, {
+    readItems("site_content" as any, {
       filter: { key: { _in: keys } },
       fields: ["key", "value"],
       limit: keys.length,
