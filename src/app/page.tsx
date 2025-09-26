@@ -1,101 +1,163 @@
+import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { fetchCategories, getAssetUrl } from "@/lib/cms";
+import { getHomePageContent } from "@/lib/site-content";
+import { Container } from "@/components/site/container";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function Home() {
+const HeroCanvas = dynamic(
+  () => import("@/components/hero/hero-canvas").then((mod) => mod.HeroCanvas),
+  { ssr: false },
+);
+
+export default async function HomePage() {
+  const [categories, home] = await Promise.all([
+    fetchCategories(),
+    getHomePageContent(),
+  ]);
+
+  const featuredCategories = [
+    ...categories,
+    {
+      slug: "prints",
+      name: "Fine Art Prints",
+      description: "Editioned prints with archival inks and matting options.",
+      hero_image: null,
+    },
+  ];
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="relative">
+      <HeroCanvas className="fixed inset-0 h-full w-full" />
+      <div className="relative space-y-28 pb-28">
+        <section className="relative w-full overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-24">
+          <div className="relative z-10">
+            <Container className="grid gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
+              <div className="space-y-10">
+                <div className="inline-flex items-center gap-3 rounded-full border border-border/60 bg-background/90 px-5 py-2 text-xs uppercase tracking-[0.32em] text-foreground/90 shadow-sm backdrop-blur-sm dark:border-border/70 dark:bg-background/85 dark:text-foreground">
+                  Susan Mohr Artistry
+                </div>
+                <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground drop-shadow-sm sm:text-5xl lg:text-6xl">
+                  {home.heroHeadline ?? "Light-drenched paintings for collectors and dreamers."}
+                </h1>
+                <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground/90 dark:text-foreground/85 sm:text-xl">
+                  I craft luminous acrylic stories—quiet still lifes, spirited pet portraits, and memory-rich landscapes—all layered with archival glazes and meaning.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Button asChild size="lg" className="shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5">
+                    <Link href="/prints">Collect a Print</Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    asChild
+                    size="lg"
+                    className="border-border/70 bg-background/80 text-foreground backdrop-blur-sm hover:bg-background dark:border-border/60 dark:bg-background/70 dark:text-foreground dark:hover:bg-background/80"
+                  >
+                    <Link href="/contact">Commission a Story</Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="space-y-5 rounded-3xl border border-border/50 bg-background/85 p-6 shadow-xl shadow-black/10 backdrop-blur-sm dark:border-border/40 dark:bg-background/75 dark:shadow-black/40">
+                <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Studio Notes</p>
+                {home.sections.slice(0, 4).map((section) => (
+                  <p key={section} className="text-sm leading-relaxed text-muted-foreground/90">
+                    {section}
+                  </p>
+                ))}
+              </div>
+            </Container>
+          </div>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_20%_80%,rgba(255,182,182,0.16),transparent_62%),radial-gradient(65%_55%_at_90%_25%,rgba(156,198,255,0.22),transparent_65%)]" />
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <Container className="space-y-12">
+          <header className="space-y-2 text-center">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Explore the work</h2>
+            <p className="text-muted-foreground">Originals and prints that shimmer with layered acrylic light.</p>
+          </header>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredCategories.map((category) => {
+              const imageUrl = getAssetUrl(category.hero_image, "width=800&quality=80");
+              return (
+                <Card
+                  key={category.slug}
+                  className="group relative overflow-hidden border border-border/60 bg-gradient-to-br from-card/95 via-background/85 to-secondary/50 shadow-lg shadow-black/10 transition-transform backdrop-blur-sm hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 dark:border-border/40 dark:from-card/80 dark:via-background/70 dark:to-secondary/25 dark:shadow-black/40"
+                >
+                  <Link href={category.slug === "prints" ? "/prints" : `/galleries/${category.slug}`} className="flex h-full flex-col">
+                    {imageUrl ? (
+                      <div className="relative h-60 w-full overflow-hidden">
+                        <Image
+                          src={imageUrl}
+                          alt={category.name}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          priority={category.slug === "still-life"}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-60 items-center justify-center bg-muted text-muted-foreground">Image coming soon</div>
+                    )}
+                    <CardContent className="flex flex-1 flex-col space-y-3 p-6">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                        <span className="inline-flex h-2 w-2 rounded-full bg-primary/80" />
+                        Collection
+                      </div>
+                      <h3 className="text-2xl font-semibold tracking-tight text-foreground">{category.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {category.description ?? "Immersive gallery experience"}
+                      </p>
+                      <span className="mt-auto inline-flex w-fit items-center gap-2 text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
+                        Enter gallery
+                        <span aria-hidden className="text-lg">→</span>
+                      </span>
+                    </CardContent>
+                  </Link>
+                </Card>
+              );
+            })}
+          </div>
+        </Container>
+
+        <section className="relative overflow-hidden py-24">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_10%_10%,rgba(255,204,160,0.18),transparent_62%),radial-gradient(55%_60%_at_88%_88%,rgba(132,202,255,0.18),transparent_68%)]" />
+          <Container className="relative grid gap-12 rounded-[2.5rem] border border-border/60 bg-background/80 p-10 shadow-2xl shadow-black/10 backdrop-blur-sm dark:border-border/40 dark:bg-background/70 dark:shadow-black/40 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Commission a custom piece</h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                From heirloom portraits to storied housecapes, we’ll co-create a one-of-a-kind painting composed with archival materials, layered color, and your narrative at the center.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild size="lg" className="shadow-md shadow-primary/25">
+                  <Link href="/contact">Share your idea</Link>
+                </Button>
+                <Button variant="ghost" asChild className="text-foreground hover:text-primary">
+                  <Link href="/process">See the process</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="relative rounded-3xl border border-border/60 bg-background/70 p-7 shadow-lg shadow-black/10 backdrop-blur-sm dark:border-border/40 dark:bg-background/70 dark:shadow-black/30">
+              <div className="absolute -top-14 left-6 hidden h-24 w-24 rounded-full bg-gradient-to-br from-primary/45 to-accent/35 blur-3xl lg:block" />
+              <div className="relative grid gap-6 text-sm text-muted-foreground">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Timeline</p>
+                  <p className="mt-2 text-base text-foreground">4–8 weeks from kickoff, including sketches, revisions, and final delivery.</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Materials</p>
+                  <p className="mt-2 text-base text-foreground">Museum-grade acrylics on gallery-depth canvas, sealed and ready to hang.</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration</p>
+                  <p className="mt-2 text-base text-foreground">We align on palette, mood, and storytelling details before the first brushstroke.</p>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
+      </div>
     </div>
   );
 }
